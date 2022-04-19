@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "build": "tsc",
+    "test": "npx tsc && jasmine",
     "format": "prettier --write src/**/*.ts && eslint src/**/*.ts  --fix",
     "start": "npm run build && node dist/server.js"
   },
@@ -21,16 +22,26 @@
   },
   "homepage": "https://github.com/HassanElwany/StoreProjectUdacity#readme",
   "dependencies": {
+    "@types/jasmine": "^4.0.3",
+    "dotenv": "^16.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "nodemon": "^2.0.15",
+    "express": "^4.17.3",
+    "jasmine": "^4.1.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "morgan": "^1.10.0",
     "prettier": "^2.6.2",
-    "ts-node": "^10.7.0",
+    "supertest": "^6.2.2",
     "typescript": "^4.6.3"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^17.0.25",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
-    "eslint": "^8.13.0"
+    "eslint": "^8.13.0",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0"
   }
 }
