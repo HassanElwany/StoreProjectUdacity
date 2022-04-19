@@ -1,9 +1,14 @@
-import express, { Application } from "express";
+import express, { Application, Request, Response } from "express";
 
-const app: Application = express();
 const PORT = 3000;
-//starting for server
+const app: Application = express();
 
+//starting for server
+app.get("/", (req: Request, res: Response) => {
+  res.json({
+    massage: "Hello Hassan",
+  });
+});
 app.listen(PORT, () => {
   console.log(`server is runing on port: ${PORT}`);
 });
