@@ -1,7 +1,15 @@
 import express, { Application, Request, Response } from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 
 const PORT = 3000;
 const app: Application = express();
+
+app.use(morgan("common"));
+
+app.use(express.json());
+
+app.use(helmet());
 
 //starting for server
 app.get("/", (req: Request, res: Response) => {
