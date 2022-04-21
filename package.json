@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/HassanElwany/StoreProjectUdacity#readme",
   "dependencies": {
+    "@types/pg": "^8.6.5",
     "dotenv": "^16.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
