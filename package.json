@@ -7,7 +7,7 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "test": "npm run build && jasmine",
-    "migration:run": "db-migrate up -c",
+    "migration:run": "db-migrate up",
     "format": "prettier --write src/**/*.ts && eslint src/**/*.ts  --fix",
     "start": "npm run build && node dist/server.js"
   },

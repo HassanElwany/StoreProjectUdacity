@@ -2,8 +2,6 @@ import express, { Application, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import config from "./config";
-import db from "./database";
-console.log(config);
 
 const PORT = config.port || 3000;
 const app: Application = express();
