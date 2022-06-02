@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import config from "../config";
 import UserModel from "../models/user.model";
 
 const userModel = new UserModel();
@@ -63,4 +65,25 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { create, getUsers, getUser, updateUser, deleteUser };
+const authentication = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const theOne = req.body;
+    const user = await userModel.auth(theOne);
+    const token = jwt.sign({ user }, config.tokenSecret as unknown as string);
+    if (!user) {
+      return res.status(401).send(`Unauthorized user`);
+    }
+    return res.json({
+      status: "success",
+      data: { user, token },
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export { create, getUsers, getUser, updateUser, deleteUser, authentication };

@@ -1,5 +1,12 @@
 import db from "../database/index";
 import User from "../types/user.type";
+import bcrypt from "bcrypt";
+import config from "../config";
+
+const hashedPass = (password: string) => {
+  const salt = parseInt(config.salt as string, 10);
+  return bcrypt.hashSync(`${password}${config.pepper}`, salt);
+};
 
 class UserModel {
   // create new user
@@ -13,7 +20,7 @@ class UserModel {
         user.user_name,
         user.first_name,
         user.last_name,
-        user.password,
+        hashedPass(user.password),
       ]);
       client.release();
       return result.rows[0];
@@ -61,7 +68,7 @@ class UserModel {
         user.user_name,
         user.first_name,
         user.last_name,
-        user.password,
+        hashedPass(user.password),
         user.id,
       ]);
       client.release();
@@ -88,6 +95,32 @@ class UserModel {
       throw new Error(
         `can not delete user which has id num: ${id}, ${(err as Error).message}`
       );
+    }
+  }
+
+  async auth(user: User): Promise<User | null> {
+    try {
+      const client = await db.connect();
+      const sql = `SELECT password FROM users WHERE email=$1`;
+      const result = await client.query(sql, [user.email]);
+      if (result.rows.length) {
+        const { password: hashedPass } = result.rows[0];
+        const isPsswordValid = bcrypt.compareSync(
+          `${user.password}${config.pepper}`,
+          hashedPass
+        );
+        if (isPsswordValid) {
+          const userData = await client.query(
+            `SELECT id, email, user_name, first_name, last_name FROM users WHERE email=($1)`,
+            [user.email]
+          );
+          return userData.rows[0];
+        }
+      }
+      client.release();
+      return null;
+    } catch (err) {
+      throw new Error(`Unable to login: ${(err as Error).message}`);
     }
   }
 }
