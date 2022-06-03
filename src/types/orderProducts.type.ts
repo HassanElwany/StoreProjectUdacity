@@ -1,6 +1,8 @@
 type orderProducts = {
-  product_id: string;
-  product_quantity: number;
+  id?: number;
+  products_id?: string;
+  order_id?: string;
+  quantity: number;
 };
 
 export default orderProducts;

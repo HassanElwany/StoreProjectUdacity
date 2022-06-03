@@ -9,7 +9,6 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await userModel.createUser(req.body);
     res.status(200).send(`user created`);
-    console.log(user);
     return user;
   } catch (err) {
     next(err);
@@ -71,8 +70,8 @@ const authentication = async (
   next: NextFunction
 ) => {
   try {
-    const theOne = req.body;
-    const user = await userModel.auth(theOne);
+    const { email, password } = req.body;
+    const user = await userModel.auth(email, password);
     const token = jwt.sign({ user }, config.tokenSecret as unknown as string);
     if (!user) {
       return res.status(401).send(`Unauthorized user`);

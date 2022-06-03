@@ -1,17 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import config from "../config";
-import Error from "../interface/interface.err";
 
-const handelUnauth = (next: NextFunction) => {
+const handleAuth = (next: NextFunction) => {
   const error: Error = new Error("login Error: try again");
-  error.status = 401;
   next(error);
 };
 
-const validation = async (req: Request, _res: Response, next: NextFunction) => {
+const validation = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const authHeader = req.get("Authorization");
+    const authHeader = req.headers.authorization;
     if (authHeader) {
       const bearer = authHeader.split(" ")[0].toLowerCase();
       const token = authHeader.split(" ")[1];
@@ -23,16 +21,16 @@ const validation = async (req: Request, _res: Response, next: NextFunction) => {
         if (decode) {
           next();
         } else {
-          handelUnauth(next);
+          handleAuth(next);
         }
       } else {
-        handelUnauth(next);
+        handleAuth(next);
       }
     } else {
-      handelUnauth(next);
+      handleAuth(next);
     }
   } catch (error) {
-    handelUnauth(next);
+    handleAuth(next);
   }
 };
 

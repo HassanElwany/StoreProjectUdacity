@@ -14,7 +14,7 @@ class UserModel {
     try {
       const client = await db.connect();
       const sql = `INSERT INTO users (email, user_name, first_name, last_name, password)
-            values($1, $2, $3, $4, $5) returning id, email, user_name`;
+            values($1, $2, $3, $4, $5) RETURNING id, email, user_name`;
       const result = await client.query(sql, [
         user.email,
         user.user_name,
@@ -32,7 +32,7 @@ class UserModel {
   async getMany(): Promise<User[]> {
     try {
       const client = await db.connect();
-      const sql = `SELECT id, email, user_name, first_name, last_name from users`;
+      const sql = `SELECT id, email, user_name, first_name, last_name FROM users`;
       const result = await client.query(sql);
       client.release();
       return result.rows;
@@ -98,21 +98,21 @@ class UserModel {
     }
   }
 
-  async auth(user: User): Promise<User | null> {
+  async auth(email: string, password: string): Promise<User | null> {
     try {
       const client = await db.connect();
       const sql = `SELECT password FROM users WHERE email=$1`;
-      const result = await client.query(sql, [user.email]);
+      const result = await client.query(sql, [email]);
       if (result.rows.length) {
         const { password: hashedPass } = result.rows[0];
-        const isPsswordValid = bcrypt.compareSync(
-          `${user.password}${config.pepper}`,
+        const validPassword = bcrypt.compareSync(
+          `${password}${config.pepper}`,
           hashedPass
         );
-        if (isPsswordValid) {
+        if (validPassword) {
           const userData = await client.query(
             `SELECT id, email, user_name, first_name, last_name FROM users WHERE email=($1)`,
-            [user.email]
+            [email]
           );
           return userData.rows[0];
         }
