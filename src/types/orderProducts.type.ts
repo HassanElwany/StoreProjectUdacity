@@ -1,7 +1,7 @@
 type orderProducts = {
   id?: number;
-  products_id?: string;
-  order_id?: string;
+  products_id?: number;
+  order_id?: number;
   quantity: number;
 };
 

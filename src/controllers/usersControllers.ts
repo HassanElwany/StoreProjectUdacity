@@ -74,11 +74,14 @@ const authentication = async (
     const user = await userModel.auth(email, password);
     const token = jwt.sign({ user }, config.tokenSecret as unknown as string);
     if (!user) {
-      return res.status(401).send(`Unauthorized user`);
+      return res.status(401).json({
+        status: "error",
+        message: "info does not match",
+      });
     }
     return res.json({
       status: "success",
-      data: { user, token },
+      data: { ...user, token },
     });
   } catch (err) {
     return next(err);
