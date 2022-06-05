@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "test": "set ENV=test&& db-migrate up && jasmine-ts && db-migrate reset",
+    "test": "set ENV=test && tsc && npx db-migrate up --env test  && jasmine && npx db-migrate reset",
     "format": "prettier --write src/**/**/*.ts && eslint src/**/*.ts --fix",
     "start": "npm run build && node dist/index.js",
     "migrate": "db-migrate up",

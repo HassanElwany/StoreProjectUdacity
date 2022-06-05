@@ -66,14 +66,14 @@ describe("user model", () => {
 
     it("testing create should return user", async () => {
       const user = await userModel.createUser(userTest2);
-      expect(user.id).toEqual(2);
+      expect(user.id).toEqual(3);
     });
 
     it("get many users tested should return array of users objects", async () => {
       const users = await userModel.getMany();
       expect(users[0].id).toEqual(1);
       expect(users[0].user_name).toEqual("test");
-      expect(users.length).toBe(2);
+      expect(users.length).toBe(3);
     });
 
     it("tested get by id should return specific user by id", async () => {
