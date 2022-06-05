@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import config from "../config";
 import UserModel from "../models/user.model";
+import User from "../types/user.type";
 
 const userModel = new UserModel();
 
@@ -70,21 +71,29 @@ const authentication = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
-    const user = await userModel.auth(email, password);
-    const token = jwt.sign({ user }, config.tokenSecret as unknown as string);
-    if (!user) {
-      return res.status(401).json({
-        status: "error",
-        message: "info does not match",
-      });
+    const id = req.body.id as unknown as number;
+    const password = req.body.password as unknown as string;
+
+    if (id === undefined || password === undefined) {
+      res.status(400);
+      res.send("ID or Password are missing");
+      return false;
     }
-    return res.json({
-      status: "success",
-      data: { ...user, token },
-    });
-  } catch (err) {
-    return next(err);
+
+    const user: User | null = await userModel.auth(id, password);
+    const token = jwt.sign({ user: user }, config.tokenSecret as string);
+
+    if (user === null) {
+      res.status(401);
+      res.send(`Wrong password for user with id ${id}.`);
+
+      return false;
+    }
+
+    res.json(token);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
   }
 };
 

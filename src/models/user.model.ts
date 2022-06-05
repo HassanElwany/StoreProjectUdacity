@@ -2,6 +2,7 @@ import db from "../database/index";
 import User from "../types/user.type";
 import bcrypt from "bcrypt";
 import config from "../config";
+import { Connection } from "pg";
 
 const hashedPass = (password: string) => {
   const salt = parseInt(config.salt as string, 10);
@@ -98,30 +99,21 @@ class UserModel {
     }
   }
 
-  async auth(email: string, password: string): Promise<User | null> {
-    try {
-      const client = await db.connect();
-      const sql = `SELECT password FROM users WHERE email=$1`;
-      const result = await client.query(sql, [email]);
-      if (result.rows.length) {
-        const { password: hashedPass } = result.rows[0];
-        const validPassword = bcrypt.compareSync(
-          `${password}${config.pepper}`,
-          hashedPass
-        );
-        if (validPassword) {
-          const userData = await client.query(
-            `SELECT id, email, user_name, first_name, last_name FROM users WHERE email=($1)`,
-            [email]
-          );
-          return userData.rows[0];
-        }
+  async auth(id: number, password: string): Promise<User | null> {
+    const client = await db.connect();
+    const sql = `SELECT * FROM users WHERE id=($1)`;
+    const result = await client.query(sql, [id]);
+    if (result.rows.length) {
+      const user = result.rows[0];
+      console.log(user);
+
+      if (bcrypt.compareSync(password + config.pepper, user.password)) {
+        console.log("success");
+        return user;
       }
-      client.release();
-      return null;
-    } catch (err) {
-      throw new Error(`Unable to login: ${(err as Error).message}`);
     }
+    console.log("password failed");
+    return null;
   }
 }
 

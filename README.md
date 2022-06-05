@@ -1,17 +1,27 @@
 # StoreProjectUdacity
 
-## Started
+# Decryption
+A Backend designed with TypeScript, NodeJs and PostgreSQL. It's for a store where users can sign up and log in, navigate the list of products, view specifications of a specific product and add products to their cart so that they can make orders
+
+
+
+## Scripts for build the project
 
 After you cloned this repo : 'npm install'
 
+npm run dev: to start the server and watch all changes.
 
-To migrate db schema: 'npx db-migrate'
 
-To run tests in test env: 'npm  test'
+npm run build: to compile typescript.
 
-to build project into build folder: 'npm start'
 
-To run and watch: 'npm run dev'
+npm run test: to run tests using jasmine library.
+
+npm run format: formatting the syntax and lint it via pritter and es lint
+
+npm start: to run and build the project
+
+
 
 
 ## Express endpoints examples 

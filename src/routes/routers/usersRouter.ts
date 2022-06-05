@@ -9,15 +9,16 @@ import {
 } from "../../controllers/usersControllers";
 import validation from "../../middleware/middleware.auth";
 
-const routes = Router();
+const userRoutes = Router();
 
-routes.route("/").get(validation, getUsers).post(create);
+userRoutes.get("/", validation, getUsers);
 
-routes
-  .route("/:id")
-  .get(validation, getUser)
-  .patch(validation, updateUser)
-  .delete(validation, deleteUser);
-routes.route("/authentication").post(authentication);
+userRoutes.get("/:id", validation, getUser);
 
-export default routes;
+userRoutes.post("/", create);
+
+userRoutes.post("");
+
+userRoutes.route("/authentication").post(authentication);
+
+export default userRoutes;

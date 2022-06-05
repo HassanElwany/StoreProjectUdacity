@@ -1,5 +1,5 @@
 /* Replace with your SQL commands */
-CREATE TABLE order_products
+CREATE TABLE order-products
 (
     id SERIAL PRIMARY KEY,
     quantity  integer,

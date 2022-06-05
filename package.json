@@ -8,7 +8,9 @@
     "build": "tsc",
     "test": "export ENV=test && tsc && db-migrate up --env test && tsc && jasmine && db-migrate reset",
     "format": "prettier --write src/**/**/*.ts && eslint src/**/*.ts --fix",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node dist/index.js",
+    "migrate": "db-migrate up",
+    "dbDelete": "db-migrate --env test reset && db-migrate reset"
   },
   "repository": {
     "type": "git",
