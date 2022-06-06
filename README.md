@@ -30,10 +30,23 @@ GET: '/users/:id' return user with id
 GET: '/users' returns all users 
 POST: '/users' use request header body to make new user 
 
-#DB Creation and Migrations
-Create 2 Postgres databases 1 for development and another for test.
+ Main Endpoint: http://localhost:3000
 
-Add your DB values like db name, user etc. into .env file and into database.json file
+Main routes Endpoint: http://localhost:3000/routers
+
+Users Routes: http://localhost:3000/routers/users
+
+Products Routes: http://localhost:3000/routers/products
+
+Orders Routes: http://localhost:3000/routers/orders
+
+# DB Creation and Migrations create user.
+Create USER test  WITH PASSWORD "test123";
+## Create 2 Postgres databases 1 for development and another for test.
+CREATE DATABASE store_dev;
+CREATE DATABASE store_test;
+
+
 
 ## Example .env file content:
 ### all of values are secret 

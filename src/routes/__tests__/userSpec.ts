@@ -56,4 +56,15 @@ describe("user routers endPoints", () => {
       expect(res.status).toBe(401);
     });
   });
+
+  it("Tests get users", async (): Promise<void> => {
+    const response = await request
+      .get("/routers/users")
+      .set("Content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(200);
+    const bodyData = response.body.data;
+    expect(bodyData[0].id).toEqual(1);
+    expect(bodyData[1].id).toEqual(2);
+  });
 });

@@ -60,4 +60,11 @@ describe("Products routes responses", () => {
     expect(bodyData.id).toEqual(2);
     expect(bodyData.price).toEqual(30);
   });
+
+  it("Test get all products", async (): Promise<void> => {
+    const response = await request.get("/routers/products");
+    expect(response.status).toBe(200);
+    const bodyData = response.body.data;
+    expect(bodyData[0].id).toEqual(1);
+  });
 });
